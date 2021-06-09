@@ -1,0 +1,46 @@
+.index-content {
+  border: 1px solid rgb(85, 164, 255);
+  border-radius: 20px;
+  text-align: center;
+  margin: auto;
+  display: block;
+  margin-top: 10px;
+}
+
+.index-post-view {
+  width: 70%;
+  margin: auto;
+}
+
+.newpost {
+  padding: 50px;
+}
+
+.newpost-title,
+.myprofile-title,
+.edit-title,
+.comment-title,
+.index-title {
+  text-align: center;
+  padding: 20px;
+}
+
+.myprofile-info {
+  display: flex;
+  margin: auto;
+  justify-content: space-around;
+  width: 70%;
+  border-radius: 20px;
+  background-color: rgb(235, 196, 22);
+  padding: 5px;
+}
+
+.nav-container-pagination {
+  padding: 20px;
+  width: 70%;
+  margin: auto;
+}
+
+.edit-section {
+  padding: 20px;
+}

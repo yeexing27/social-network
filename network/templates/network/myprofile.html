@@ -1,0 +1,86 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+    <h4 class="myprofile-title">Profile: <span class="user-profile">{{user_profile.username}}</span> <span>
+        {% if user_profile.username != user.username %}
+            <button type="button" class="btn btn-warning follow" onclick='follow()'></button>
+        {% endif %}
+    </span></h4>
+    <div class="myprofile-info">
+        <h4> <i class="fas fa-users"></i> Follower: {{ follower_count }}</h4>
+        <h4> <i class="fas fa-users"></i> Following: {{ following_count }}</h4>
+    </div>
+
+<div class="index-post-view">
+    {% for post in posts %}
+        <div class="index-content">
+            <p>{{ post.date }}</p>
+            <p>{{ post.post }}</p>
+            <p><button type="button" class="btn btn-warning like" onclick='like({{ post.id }})'><span class="like-btn-text {{post.id}}-btn"></span></button> <span class="like-text {{post.id}}-text">{{ post.like_count }}</span><span>
+                {% if user.username == user_profile.username %}
+                    <button type="button" class="btn btn-warning"><a href="{% url 'edit_html' post.id %}">Edit</a></button>
+                {% endif %}
+            </span></p>
+            <p class="hidden" style="display: none;">{{ post.id }}</p>
+        </div>
+
+
+    {% empty %}
+        <p>You can create your post today!</p>
+    {% endfor %}
+</div>
+
+<div class="nav-container-pagination">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="{% url 'change' page_visiting=selected button='previous' from_page='myprofile' username=user_profile.username %}">Previous</a></li>
+            {% for page in pages %}
+                <li class="page-item {{page}}"><a class="page-link" href="{% url 'myprofile' user_profile.username page %}">{{ page }}</a></li>
+            {% endfor %}
+
+        <li class="page-item next"><a class="page-link" href="{% url 'change' page_visiting=selected button='next' from_page='myprofile' username=user_profile.username %}">Next</a></li>
+        <span class="selected" style="display: none;">{{ selected }}</span>
+        </ul>
+    </nav>
+</div>
+
+    <script src="{% static 'network/jquery.js' %}"></script>
+    <script src="{% static 'network/system2.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+            var user_profile = $('.user-profile').text()
+
+            fetch(`/follow/${user_profile}`, {
+                method: "PUT"
+            }).then(response => response.json())
+            .then(data => {
+                if (data.following_check == true){
+                    $('.follow').text('Unfollow')
+                } else {
+                    $('.follow').text('Follow')
+                }
+            })
+
+            var hidden = $('.hidden')
+            console.log(hidden)
+            $.each(hidden, function( index, value){
+
+                fetch(`/like/${parseInt(value.innerHTML)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.check_like == true){
+                        $('.' + value.innerHTML + '-btn').text('Dislike')
+                    } else {
+                        $('.' + value.innerHTML + '-btn').text('Like')
+                    }
+                })
+            })
+        
+            var selected = $('.selected').text()
+            $('li.' + selected).addClass('active')
+        })
+    </script>
+
+{% endblock %}

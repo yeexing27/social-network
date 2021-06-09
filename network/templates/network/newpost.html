@@ -1,0 +1,18 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+
+<h4 class="newpost-title">New Post</h4>
+<div class="newpost">
+    <form action="{% url 'new_post' %}" method="POST">
+        {% csrf_token %}
+        <div class="input-group">
+            <span class="input-group-text" >Tell your story...</span>
+            <textarea class="form-control" aria-label="With textarea" name="post"></textarea>
+        </div>
+        <br>
+    <button type="submit" class="btn btn-warning">Submit</button>
+    </form>
+</div>
+
+{% endblock %}

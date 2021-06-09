@@ -1,0 +1,64 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+<h4 class="index-title">All Post</h4>
+    <div class="index-post-view">
+        {% for post in posts %}
+            <div class="index-content">
+                <a href="{% url 'myprofile' username=post.user page_visiting=1 %}"><h4>{{ post.user }}</h4></a>
+                <p>{{ post.date }}</p>
+                <p>{{ post.post }}<span> 
+                    {% if user.username == post.user.username %}
+                        <button type="button" class="btn btn-warning"><a href="{% url 'edit_html' post.id %}">Edit</a></button>
+                    {% endif %}
+                </span></p>
+                <p><button type="button" class="btn btn-warning like" onclick='like({{ post.id }})'><span class="like-btn-text {{post.id}}-btn"></span></button> <span class="like-text {{post.id}}-text">{{ post.like_count }} </span> <button type="button" class="btn btn-warning like"><a href="{% url 'comment' post.id %}">Comment</a></button></p>
+                <p class="hidden" style="display: none;">{{ post.id }}</p>
+            </div>
+        {% empty %}
+            <p>You can create your post today!</p>
+        {% endfor %}
+    </div>
+
+    <div class="nav-container-pagination">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="{% url 'change' page_visiting=selected button='previous' from_page='index' username='index' %}">Previous</a></li>
+                {% for page in pages %}
+                    <li class="page-item {{page}}"><a class="page-link" href="{% url 'pages' page %}">{{ page }}</a></li>
+                {% endfor %}
+
+            <li class="page-item next"><a class="page-link" href="{% url 'change' page_visiting=selected button='next' from_page='index' username='index' %}">Next</a></li>
+            <span class="selected" style="display: none;">{{ selected }}</span>
+            </ul>
+        </nav>
+    </div>
+    <script src="{% static 'network/jquery.js' %}"></script>
+    <script src="{% static 'network/system2.js' %}"></script>
+    <script>
+    
+        $(document).ready(function(){
+            var hidden = $('.hidden')
+            console.log(hidden)
+            $.each(hidden, function( index, value){
+
+                fetch(`/like/${parseInt(value.innerHTML)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.check_like == true){
+                        $('.' + value.innerHTML + '-btn').text('Dislike')
+                    } else {
+                        $('.' + value.innerHTML + '-btn').text('Like')
+                    }
+                })
+            })
+
+            var selected = $('.selected').text()
+            $('li.' + selected).addClass('active')
+            
+        })
+
+    </script>
+{% endblock %}
+

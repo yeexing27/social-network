@@ -1,0 +1,36 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+
+<h4 class="comment-title">Comment</h4>
+<div class="index-post-view">
+    <div class="index-content">
+        <a href="{% url 'myprofile' post.user 1 %}"><h4>{{ post.user }}</h4></a>
+        <p>{{ post.date }}</p>
+        <p>{{ post.post }}</p>
+        <p>Like: <span>0</span></p>
+    </div>
+</div>
+    
+    <div class="edit-section">
+        <h4>Comment Section</h4>
+        <ul>
+            {% for comment in comments %}
+                <li>({{ comment.date }}) {{ comment.user }}: {{ comment.comment }} </li>
+            {% empty %}
+                <p>No one has commented.</p>
+            {% endfor %}
+        </ul>
+    </div>
+
+<div class="edit-section">
+    <form action="{% url 'comment' post.id %}" method="POST">
+        {% csrf_token %}
+        <label for="exampleFormControlTextarea1" class="form-label">Any comment?</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="comment"></textarea>
+        <br>
+        <button type="submit" class="btn btn-warning like">Submit</button>
+    </form>
+</div>
+
+{% endblock %}
