@@ -47,7 +47,7 @@
 </div>
 
     <script src="{% static 'network/jquery.js' %}"></script>
-    <script src="{% static 'network/system2.js' %}"></script>
+    <script src="{% static 'network/system3.js' %}"></script>
     <script>
         $(document).ready(function(){
             var user_profile = $('.user-profile').text()
@@ -71,7 +71,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.check_like == true){
-                        $('.' + value.innerHTML + '-btn').text('Dislike')
+                        $('.' + value.innerHTML + '-btn').text('Unlike')
                     } else {
                         $('.' + value.innerHTML + '-btn').text('Like')
                     }

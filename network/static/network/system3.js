@@ -13,12 +13,12 @@ function like(post_id){
             fetch(`/like/${post_id}`)
             .then(response => response.json())
             .then(item => {
-                console.log(item.like)
-                if (item.like){
+                if (item.like || item.like >= 0){
+                    console.log("TESTING 2")
                     $('.'+ post_id +'-text').text(`${item.like}`)
                 
                     if ( item.check_like == true){
-                        $('.' + post_id + '-btn').text('Dislike')
+                        $('.' + post_id + '-btn').text('Unlike')
                     } else {
                         $('.' + post_id + '-btn').text('Like')
                     } 
